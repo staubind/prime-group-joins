@@ -62,3 +62,17 @@ JOIN "products"
 	ON "line_items"."product_id" = "products"."id"
 GROUP BY "orders"."id"
 ORDER BY "totalCost" DESC;
+
+-- How much has each customer spent in total?
+SELECT "first_name", "last_name", sum("products"."unit_price" * "line_items"."quantity") as "crossOrderTotalPrice" FROM "customers"
+JOIN "addresses"
+	ON "customers"."id" = "addresses"."customer_id"
+JOIN "orders"
+	ON "addresses"."id" = "orders"."address_id"
+JOIN "line_items"
+	ON "orders"."id" = "line_items"."order_id"
+JOIN "products"
+	ON "products"."id" = "line_items"."product_id"
+GROUP BY "customers"."id"
+ORDER BY "crossOrderTotalPrice" DESC;
+
